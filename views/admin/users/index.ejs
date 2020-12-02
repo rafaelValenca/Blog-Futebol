@@ -1,0 +1,44 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/homenavbar.ejs') %>
+
+<div class="container">
+    <hr>
+    <h2>Usuários</h2>
+    <a class="btn btn-success" href="/admin/users/create" >Criar novo ususário</a>
+    <hr>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            <% users.forEach(user => { %>
+                <tr>
+                    <td><%= user.id %></td>
+                    <td><%= user.email %></td>
+                    <td>
+                        <form method="POST" action="/users/delete" style="display:inline" onsubmit="confirmarDelecao(event, this)"> <!-- No caso this está se referindo ao formulario -->
+                            <input type="hidden" name="id" value="<%= user.id %>">
+                            <button class="btn btn-danger">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+           <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('../../partials/footer.ejs') %>
+<script>    //Previnir que o formulario seja submetido // evitando acidentes
+    function confirmarDelecao(event, form){
+        event.preventDefault();
+        var decision = confirm("Você quer deletar este artigo?");
+        if (decision) {
+            form.submit(); //para enviar formulario
+        }
+    }
+</script>

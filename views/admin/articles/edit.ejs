@@ -1,0 +1,51 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
+
+<div class="container">
+  
+    <hr>
+    <div class="card">
+        <div class="card-header">
+            <h2>Editar Artigo</h2>
+
+        </div>
+        <div class="card-body"></div>
+            <form method="POST" action="/articles/update"> <!-- tem que atualizar para update (rota) -->
+                <input type="hidden" name="id" value="<%= article.id %>">
+                <input class="form-control" type="text" name="title" placeholder="Defina o texto" value="<%= article.title %>">
+                <br>
+                <textarea class="form-control" placeholder="Escreva o artigo aqui" name="body" id="article"></textarea><br>
+                <label>Categoria</label>
+                <select name="category" class="form-control">  <!-- Mostrando as categories -->
+                    <% categories.forEach((category) => { %>
+                        <% if(category.id == article.categoryId) { %>
+                            <option value="<%= category.id %>" selected><%= category.title %></option>
+                        <% } else { %>
+                            <option value="<%= category.id %>"><%= category.title %></option>
+                        <% } %>
+                    <% }) %>
+                </select> <br>
+                <button class="btn btn-primary">Atualizar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="content" style="display: none;">
+    <%- article.body %> <!-- passsando o artigo(body) para dentro do textarea -->
+</div>
+
+<%- include('../../partials/footer.ejs') %>
+<script src="/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({       //textarea
+        language: 'pt_BR',
+        selector: "#article",
+        plugins: [
+            'advlist autolink link image lists print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons'   //plugins
+        ],
+        init_instance_callback: () => {
+            tinymce.get("article").setContent($("#content").html()) //pegando o conteudo da dic contente e jogando na textarea
+        }
+    });
+</script>

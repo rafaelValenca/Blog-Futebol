@@ -1,0 +1,48 @@
+<%- include('../../partials/header.ejs') %>
+<%- include('../../partials/navbar.ejs') %>
+<div class="container">
+    <hr>
+    <h2>Categorias</h2>
+    <a class="btn btn-success" href="/admin/categories/new" >Criar nova categoria</a>
+    <hr>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titulo</th>
+                <th>Slug</th>
+                <th>Ações</th>            <!-- listagem de categorias -->
+            </tr>
+        </thead>
+        <tbody>
+        
+            <% categories.forEach(Category => { %>
+                <tr>
+                    <th><%= Category.id %></th>
+                    <th><%= Category.title %></th>
+                    <th><%= Category.slug %></th>
+                    <th>
+                        <a href="/admin/categories/edit/<%= Category.id %>" class="btn btn-warning">Editar</a>
+                        
+                        <form method="POST" action="/categories/delete" style="display:inline" onsubmit="confirmarDelecao(event, this)"> <!-- No caso this está se referindo ao formulario -->
+                            <input type="hidden" name="id" value="<%= Category.id %>">
+                            <button class="btn btn-danger">Deletar</button>
+                        </form>
+                    </th>
+                </tr>
+           <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('../../partials/footer.ejs') %>
+
+<script>    //Previnir que o formulario seja submetido // evitando acidentes
+    function confirmarDelecao(event, form){
+        event.preventDefault();
+        var decision = confirm("Você quer deletar esta categorria?");
+        if (decision) {
+            form.submit(); //para enviar formulario
+        }
+    }
+</script>
